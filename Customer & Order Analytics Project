@@ -1,3 +1,6 @@
+--In this this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+--Each section below shows the query pertaining to the question stated above that section of queries.
+
 --How many many unique orders were placed in January? In other words, how many distinct order ids do we have? 
 --Remember to filter out the blank and incorrect order IDs like we did in the "dealing with messy data" section of the previous lesson!
 
