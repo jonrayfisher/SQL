@@ -1,0 +1,136 @@
+-- This is the final project for class. In this project there are many different questions that utilize different types of 
+-- queries and showing my capability to utilize the different query types and commands.
+
+
+
+-- Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+
+Select customerid,
+firstname,
+lastname,
+country
+From customers
+Where country Not IN ('US','USA')
+order by customerid asc
+;
+
+-- Show only the Customers from Brazil
+
+Select customerid,
+firstname,
+lastname,
+country
+From customers
+where country = 'Brazil'
+;
+
+-- Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, 
+-- Date of the invoice, and billing country.
+
+Select 
+i.invoiceid,
+i.invoicedate,
+c.customerid,
+c.firstname,
+c.lastname,
+i.billingcountry
+From chinook.invoices i
+Join chinook.customers  c On i.invoiceid=c.customerid
+where i.billingcountry = 'Brazil'
+Order by i.invoiceid asc
+;
+
+-- Show the Employees who are Sales Agents.
+
+Select 
+firstname,
+lastname,
+title
+From chinook.employees
+Where title like '%Agent%'
+Order by lastname asc
+;
+
+-- Find a unique/distinct list of billing countries from the Invoice table.
+
+Select distinct billingcountry
+From invoices
+asc
+;
+
+-- Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+
+Select 
+i.invoiceid,
+i.customerid,
+e.employeeid,
+e.firstname || ' ' || e.lastname AS sales_agent_name
+From invoices i
+Join customers c ON i.customerid = c.customerid
+Join employees e ON i.invoiceid = e.employeeid
+Where e.title = 'Sales Agent'
+Group by sales_agent_name
+Order by i.invoiceid 
+ASC;
+
+-- Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+Select 
+i.invoiceid,
+c.customerid,
+c.firstname,
+c.lastname,
+i.billingcountry,
+i.total,
+e.employeeid,
+e.firstname,
+e.lastname
+From invoices i
+Join customers c ON i.customerid = c.customerid
+Join employees e ON i.invoiceid = e.employeeid
+;
+
+--How many Invoices were there in 2009?
+
+Select COUNT(*) as order_count
+From invoices
+Where strftime('%Y', invoicedate) = '2009'
+;
+
+--What are the total sales for 2009?
+Select SUM(total) as total_sales
+From invoices
+Where strftime('%Y', invoicedate) = '2009'
+;
+
+--Write a query that includes the purchased track name with each invoice line ID.
+
+Select distinct 
+ii.invoicelineid,
+t.name
+From  tracks t
+Join invoices i 
+On t.trackid = i.invoiceid
+Join invoice_items ii On ii.invoicelineid = i.invoiceid 
+Order by i.invoiceid asc
+;
+
+
+-- Write a query that includes the purchased track name AND artist name with each invoice line ID.
+
+Select 
+ii.invoicelineid, 
+t.name AS track_name, 
+ar.name AS artist_name
+From invoice_items ii
+Join tracks t On ii.trackid = t.trackid
+Join albums al On t.albumid = al.albumid
+Join artists ar On al.artistid = ar.artistid
+Order By ii.invoicelineid asc
+;
+
+-- Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+
+--Show the total sales made by each sales agent.
+
+-- Which sales agent made the most dollars in sales in 2009?
